@@ -1,10 +1,8 @@
 /**
  * Sam Assistant chat service
  *
- * Backend contract (RealtyAvatar Regs AI / Widget endpoint):
- *   POST /api/regs (TradeGuard) — not applicable here
- *   For RealtyAvatar, we use the widget/chat API when available
- *   Fallback: call Anthropic directly for property Q&A
+ * Types and system prompt for Sam, the property Q&A assistant.
+ * Chat requests go through the site's own /api/sam/chat route.
  *
  * Sam knows:
  * - Selected listing context
@@ -29,46 +27,6 @@ export interface SamContext {
   };
   availableDocs?: string[];
   agencyName?: string;
-}
-
-export async function chatWithSam(
-  messages: ChatMessage[],
-  context: SamContext
-): Promise<string> {
-  const base = process.env.NEXT_PUBLIC_REALTYAVATAR_API_BASE || "https://realtyavatar-dashboard.vercel.app";
-  const widgetKey = process.env.REALTYAVATAR_WIDGET_API_KEY;
-  const orgId = process.env.REALTYAVATAR_ORG_ID || "1";
-
-  // Try RealtyAvatar widget/chat endpoint
-  try {
-    const headers: Record<string, string> = { "Content-Type": "application/json" };
-    if (widgetKey) headers["x-widget-key"] = widgetKey;
-
-    const res = await fetch(`${base}/api/widget/chat`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ messages, context, orgId, source: "realestatesales.com.au" }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      return data.reply || data.message || "";
-    }
-  } catch {}
-
-  // Fallback: call our own chat route
-  try {
-    const res = await fetch("/api/sam/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages, context }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      return data.reply || "";
-    }
-  } catch {}
-
-  return "I'm having trouble connecting right now. Please try again shortly or contact the agent directly.";
 }
 
 export function buildSamSystemPrompt(context: SamContext): string {
