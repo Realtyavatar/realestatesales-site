@@ -20,11 +20,21 @@ export function useAutosave<T>(
   const [retryTick, setRetryTick] = useState(0);
   const first = useRef(true);
   const saveRef = useRef(save);
+  const valueRef = useRef(value);
+  const pendingRef = useRef(false);
   const ticket = useRef(0);
 
+  useEffect(() => { saveRef.current = save; });
+  useEffect(() => { valueRef.current = value; });
+
+  // Flush any pending save when the component unmounts (e.g. navigating away)
   useEffect(() => {
-    saveRef.current = save;
-  });
+    return () => {
+      if (pendingRef.current) {
+        saveRef.current(valueRef.current).catch(() => {});
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (first.current) {
@@ -32,8 +42,10 @@ export function useAutosave<T>(
       return;
     }
     setStatus("pending");
+    pendingRef.current = true;
     const myTicket = ++ticket.current;
     const timer = setTimeout(async () => {
+      pendingRef.current = false;
       setStatus("saving");
       try {
         await saveRef.current(value);
