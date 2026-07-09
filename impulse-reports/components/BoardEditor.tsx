@@ -29,7 +29,7 @@ export default function BoardEditor({
   initialPhotos: Photo[];
 }) {
   const router = useRouter();
-  const [board, setBoard] = useState(initialBoard);
+  const [board, setBoard] = useState({ ...initialBoard, earth_location: initialBoard.earth_location ?? "" });
   const [newItemLabel, setNewItemLabel] = useState("");
 
   const status = useAutosave(board, async (b) => {

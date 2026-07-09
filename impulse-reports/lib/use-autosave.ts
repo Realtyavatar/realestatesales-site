@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export type SaveStatus = "idle" | "pending" | "saving" | "saved" | "error";
 
-const DEBOUNCE_MS = 800;
+const DEBOUNCE_MS = 400;
 const RETRY_MS = 5000;
 
 /**
