@@ -40,6 +40,7 @@ export default function BoardEditor({
         location: b.location,
         rating_amps: b.rating_amps,
         fault_level: b.fault_level,
+        earth_location: b.earth_location,
         checklist: b.checklist,
         has_defects: b.has_defects,
         defect_description: b.defect_description,
@@ -124,6 +125,16 @@ export default function BoardEditor({
                 onChange={(e) => set("location", e.target.value)}
               />
             </div>
+          </div>
+          <div>
+            <label className="label" htmlFor="earth_location">Main earth location</label>
+            <input
+              id="earth_location"
+              className="field"
+              placeholder="e.g. Water meter, earth stake at meter box"
+              value={board.earth_location}
+              onChange={(e) => set("earth_location", e.target.value)}
+            />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>

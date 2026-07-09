@@ -41,7 +41,7 @@ const defaults = {
   }),
   boards: () => ({
     id: uuid(), job_id: null, name: "", location: "", rating_amps: "",
-    fault_level: "", checklist: [], has_defects: false,
+    fault_level: "", earth_location: "", checklist: [], has_defects: false,
     defect_description: "", defect_severity: null, sort_order: 0,
     created_at: now(), updated_at: now(),
   }),
@@ -66,9 +66,16 @@ const defaults = {
     ],
     updated_at: now(),
   }),
+  quotes: () => ({
+    id: uuid(), job_id: null, quote_number: "",
+    quote_date: now().slice(0, 10), expiry_date: null,
+    status: "draft", items: [], notes: "",
+    terms: "Payment due within 14 days of acceptance. Quoted prices are exclusive of GST unless stated. Quote valid for 30 days from issue date.",
+    created_at: now(), updated_at: now(),
+  }),
 };
 
-const db = { jobs: [], boards: [], photos: [], variations: [], settings: [defaults.settings()] };
+const db = { jobs: [], boards: [], photos: [], variations: [], quotes: [], settings: [defaults.settings()] };
 
 // Seed (mirrors 0002_seed_example_job.sql)
 const seedJob = {
@@ -336,6 +343,7 @@ const server = http.createServer(async (req, res) => {
           db.boards = db.boards.filter((b) => b.job_id !== j.id);
           db.photos = db.photos.filter((p) => p.job_id !== j.id);
           db.variations = db.variations.filter((v) => v.job_id !== j.id);
+          db.quotes = db.quotes.filter((q) => q.job_id !== j.id);
         }
       }
       if (table === "boards") {

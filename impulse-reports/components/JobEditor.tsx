@@ -15,6 +15,7 @@ import {
   type Board,
   type Job,
   type JobStatus,
+  type Quote,
   type Settings,
   type Variation,
 } from "@/lib/types";
@@ -25,12 +26,14 @@ export default function JobEditor({
   initialJob,
   boards,
   variations,
+  quotes,
   photoCounts,
   settings,
 }: {
   initialJob: Job;
   boards: Board[];
   variations: Variation[];
+  quotes: Quote[];
   photoCounts: Record<string, number>;
   settings: Settings | null;
 }) {
@@ -38,6 +41,7 @@ export default function JobEditor({
   const [job, setJob] = useState(initialJob);
   const [addingBoard, setAddingBoard] = useState(false);
   const [addingVariation, setAddingVariation] = useState(false);
+  const [addingQuote, setAddingQuote] = useState(false);
 
   const status = useAutosave(job, async (j) => {
     const { error } = await supabaseBrowser()
@@ -81,6 +85,31 @@ export default function JobEditor({
       return;
     }
     router.push(`/jobs/${job.id}/boards/${data.id}`);
+  }
+
+  async function addQuote() {
+    setAddingQuote(true);
+    const today = new Date().toISOString().split("T")[0];
+    const expiry = new Date(Date.now() + 30 * 86400000).toISOString().split("T")[0];
+    const seq = Math.floor(Math.random() * 9000) + 1000;
+    const quoteNumber = `QT-${today.replace(/-/g, "")}-${seq}`;
+    const { data, error } = await supabaseBrowser()
+      .from("quotes")
+      .insert({
+        job_id: job.id,
+        quote_number: quoteNumber,
+        quote_date: today,
+        expiry_date: expiry,
+        items: [],
+      })
+      .select("id")
+      .single();
+    if (error || !data) {
+      setAddingQuote(false);
+      alert("Couldn't add quote — check your connection and try again.");
+      return;
+    }
+    router.push(`/jobs/${job.id}/quotes/${data.id}`);
   }
 
   async function addVariation() {
@@ -298,6 +327,55 @@ export default function JobEditor({
             value={job.recommendations}
             onChange={(e) => set("recommendations", e.target.value)}
           />
+        </section>
+
+        {/* Quotes */}
+        <section className="card p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-lg font-bold">Quotes</h2>
+            <span className="text-sm text-navy/50">{quotes.length}</span>
+          </div>
+          <ul className="space-y-2">
+            {quotes.map((q) => {
+              const items = Array.isArray(q.items) ? q.items : [];
+              const subtotal = items.reduce((s: number, i: any) => s + i.qty * i.unit_price, 0);
+              const total = subtotal * 1.1;
+              const statusClasses: Record<string, string> = {
+                draft: "bg-gray-100 text-gray-700",
+                sent: "bg-blue-100 text-blue-800",
+                accepted: "bg-emerald-100 text-emerald-800",
+                declined: "bg-red-100 text-red-800",
+              };
+              return (
+                <li key={q.id}>
+                  <Link
+                    href={`/jobs/${job.id}/quotes/${q.id}`}
+                    className="flex min-h-[64px] items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 active:bg-gray-50"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="font-bold">{q.quote_number || "Quote"}</p>
+                      <p className="text-sm text-navy/60">
+                        Issued {new Date(q.quote_date).toLocaleDateString("en-AU")}
+                        {q.expiry_date ? ` · Expires ${new Date(q.expiry_date).toLocaleDateString("en-AU")}` : ""}
+                      </p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="font-bold text-orange-600">{new Intl.NumberFormat("en-AU", { style: "currency", currency: "AUD" }).format(total)}</p>
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${statusClasses[q.status] ?? statusClasses.draft}`}>
+                        {q.status.charAt(0).toUpperCase() + q.status.slice(1)}
+                      </span>
+                    </div>
+                    <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-navy/30" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <button onClick={addQuote} disabled={addingQuote} className="btn-outline mt-3 w-full">
+            {addingQuote ? "Adding…" : "+ New quote"}
+          </button>
         </section>
 
         {/* Variations */}

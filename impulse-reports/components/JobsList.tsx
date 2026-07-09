@@ -11,7 +11,7 @@ const STATUS_FILTERS: { value: JobStatus | "all"; label: string }[] = [
   { value: "all", label: "All" },
   { value: "draft", label: "Draft" },
   { value: "in_progress", label: "In Progress" },
-  { value: "complete", label: "Complete" },
+  { value: "complete", label: "Complete + CES" },
 ];
 
 export function statusPillClasses(status: JobStatus): string {

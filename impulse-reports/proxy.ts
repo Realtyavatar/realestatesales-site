@@ -33,6 +33,25 @@ export async function proxy(request: NextRequest) {
 
   const isLoginPage = request.nextUrl.pathname === "/";
 
+  // Auto sign-in: if credentials are baked in as env vars, skip the login page entirely.
+  if (!user) {
+    const autoEmail = process.env.SUPABASE_AUTO_EMAIL;
+    const autoPass = process.env.SUPABASE_AUTO_PASSWORD;
+    if (autoEmail && autoPass) {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: autoEmail,
+        password: autoPass,
+      });
+      if (!error) {
+        const dest = request.nextUrl.clone();
+        if (isLoginPage) dest.pathname = "/jobs";
+        const redirect = NextResponse.redirect(dest);
+        response.cookies.getAll().forEach((c) => redirect.cookies.set(c));
+        return redirect;
+      }
+    }
+  }
+
   if (!user && !isLoginPage) {
     const url = request.nextUrl.clone();
     url.pathname = "/";

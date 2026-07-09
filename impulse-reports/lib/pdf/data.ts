@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { DEFAULT_LOGO_BASE64 } from "./default-logo";
 import type { Board, Job, Photo, Settings, Variation } from "@/lib/types";
 import type { ReportBoard, ReportData, ReportVariation } from "./report";
 
@@ -72,9 +73,14 @@ export async function loadReportData(
     }))
   );
 
-  const logoBytes = settings.logo_path
+  let logoBytes: Uint8Array | null = settings.logo_path
     ? await download(supabase, "logos", settings.logo_path)
     : null;
+
+  // Fall back to the bundled default logo if no custom one is uploaded
+  if (!logoBytes) {
+    logoBytes = new Uint8Array(Buffer.from(DEFAULT_LOGO_BASE64, "base64"));
+  }
 
   return { settings, logoBytes, job, boards, variations };
 }

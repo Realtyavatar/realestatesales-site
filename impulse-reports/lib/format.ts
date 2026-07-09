@@ -9,7 +9,11 @@ export function severityLabel(value: DefectSeverity | null): string {
 }
 
 export function statusLabel(status: JobStatus): string {
-  return status === "draft" ? "Draft" : status === "in_progress" ? "In Progress" : "Complete";
+  switch (status) {
+    case "draft": return "Draft";
+    case "in_progress": return "In Progress";
+    case "complete": return "Complete + CES";
+  }
 }
 
 export function formatDate(iso: string | null | undefined): string {

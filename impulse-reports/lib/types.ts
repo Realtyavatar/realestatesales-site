@@ -43,6 +43,7 @@ export interface Board {
   location: string;
   rating_amps: string;
   fault_level: string;
+  earth_location: string;
   checklist: ChecklistItem[];
   has_defects: boolean;
   defect_description: string;
@@ -75,6 +76,30 @@ export interface Variation {
   signer_name: string;
   signed_at: string | null;
   signature_path: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type QuoteStatus = "draft" | "sent" | "accepted" | "declined";
+
+export interface QuoteItem {
+  id: string;
+  description: string;
+  qty: number;
+  unit_price: number;
+  is_labour: boolean;
+}
+
+export interface Quote {
+  id: string;
+  job_id: string;
+  quote_number: string;
+  quote_date: string;
+  expiry_date: string | null;
+  status: QuoteStatus;
+  items: QuoteItem[];
+  notes: string;
+  terms: string;
   created_at: string;
   updated_at: string;
 }

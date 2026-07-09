@@ -274,27 +274,33 @@ export async function buildReportPdf(data: ReportData): Promise<Uint8Array> {
   b.page.drawRectangle({ x: 0, y: PAGE_H - 196, width: PAGE_W, height: 6, color: ORANGE });
 
   let mastY = PAGE_H - 60;
+
+  // Logo — top-right of masthead
   const logo = data.logoBytes ? await b.embedImage(data.logoBytes) : null;
   if (logo) {
     const dims = logo.scale(1);
-    const scale = Math.min(150 / dims.width, 56 / dims.height, 1);
+    const maxLogoH = 100;
+    const maxLogoW = 180;
+    const scale = Math.min(maxLogoW / dims.width, maxLogoH / dims.height, 1);
+    const logoW = dims.width * scale;
+    const logoH = dims.height * scale;
     b.page.drawImage(logo, {
-      x: MARGIN,
-      y: mastY - dims.height * scale + 14,
-      width: dims.width * scale,
-      height: dims.height * scale,
+      x: PAGE_W - MARGIN - logoW,
+      y: PAGE_H - 190 / 2 - logoH / 2, // vertically centred in masthead
+      width: logoW,
+      height: logoH,
     });
-    mastY -= dims.height * scale + 10;
-  } else {
-    b.page.drawText(sanitize(settings.business_name), {
-      x: MARGIN,
-      y: mastY,
-      size: 20,
-      font: b.bold,
-      color: rgb(1, 1, 1),
-    });
-    mastY -= 26;
   }
+
+  // Business name — always on the left
+  b.page.drawText(sanitize(settings.business_name), {
+    x: MARGIN,
+    y: mastY,
+    size: 20,
+    font: b.bold,
+    color: rgb(1, 1, 1),
+  });
+  mastY -= 26;
   b.page.drawText(sanitize(`${settings.rec_number}${settings.abn ? `  |  ABN ${settings.abn}` : ""}`), {
     x: MARGIN,
     y: mastY,
@@ -344,6 +350,7 @@ export async function buildReportPdf(data: ReportData): Promise<Uint8Array> {
     b.keyValue("Location", board.location);
     b.keyValue("Rating", board.rating_amps ? `${board.rating_amps} A` : "-");
     b.keyValue("Fault level", board.fault_level);
+    if (board.earth_location) b.keyValue("Main earth", board.earth_location);
 
     if (board.checklist.length > 0) {
       b.space(6);
