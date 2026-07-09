@@ -55,14 +55,20 @@ export default function BoardEditor({
   }
 
   function setResult(itemId: string, result: ChecklistResult) {
-    set(
-      "checklist",
-      board.checklist.map((item) =>
-        item.id === itemId
-          ? { ...item, result: item.result === result ? null : result }
-          : item
-      )
+    const newChecklist = board.checklist.map((item) =>
+      item.id === itemId
+        ? { ...item, result: item.result === result ? null : result }
+        : item
     );
+    // Update local state immediately
+    set("checklist", newChecklist);
+    // Also save directly to DB — don't rely on the debounced autosave
+    // because navigating away before the debounce fires loses the result
+    supabaseBrowser()
+      .from("boards")
+      .update({ checklist: newChecklist })
+      .eq("id", board.id)
+      .then(() => {});
   }
 
   function removeItem(itemId: string) {
