@@ -38,10 +38,14 @@ export default function ReportActions({ job }: { job: Job }) {
     <section className="card space-y-3 p-4">
       <h2 className="text-lg font-bold">Report</h2>
       <a
-        href={`/api/report/${job.id}`}
+        href={`/api/report/${job.id}?t=${Date.now()}`}
         className="btn-primary w-full"
         target="_blank"
         rel="noreferrer"
+        onClick={(e) => {
+          // Force a fresh URL each click so iOS Safari can't serve a cached PDF
+          (e.currentTarget as HTMLAnchorElement).href = `/api/report/${job.id}?t=${Date.now()}`;
+        }}
       >
         Download PDF report
       </a>
