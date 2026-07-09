@@ -21,6 +21,11 @@ export async function GET(
     return Response.json({ error: "Job not found" }, { status: 404 });
   }
 
+  // Debug: log checklist state for each board
+  for (const board of data.boards) {
+    console.log(`[report] board=${board.name} checklist=${JSON.stringify(board.checklist)}`);
+  }
+
   const pdf = await buildReportPdf(data);
 
   return new Response(Buffer.from(pdf), {
