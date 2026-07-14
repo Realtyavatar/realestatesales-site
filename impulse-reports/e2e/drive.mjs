@@ -143,6 +143,25 @@ async function main() {
   await page.waitForSelector("text=✓ Saved", { timeout: 15000 });
   console.log("OK: board details + custom checklist + defect saved");
 
+  step("7b. PROBE: checklist tap then IMMEDIATE Back — flush-on-unmount must save it");
+  const boardUrl = page.url();
+  const labellingItem = page.locator("li", { hasText: "Labelling compliant" }).first();
+  await labellingItem.locator("button:has-text('N/A')").click();
+  await page.goBack(); // leave within the debounce window — flush must fire on unmount
+  await page.waitForSelector("text=Boards");
+  await page.waitForTimeout(500); // let the flushed PATCH land
+  await page.goto(boardUrl); // full reload: assert against the server, not client state
+  await page.waitForSelector("text=Labelling compliant");
+  const naClass = await page
+    .locator("li", { hasText: "Labelling compliant" })
+    .first()
+    .locator("button:has-text('N/A')")
+    .getAttribute("class");
+  if (!naClass.includes("bg-gray-500")) {
+    throw new Error("checklist result lost after immediate navigation (flush-on-unmount broken)");
+  }
+  console.log("OK: checklist result survived tap-then-immediately-leave");
+
   step("8. PROBE: photo upload while OFFLINE queues, then retries when back online");
   const png = makePng(400, 300);
   await context.setOffline(true);
