@@ -2,6 +2,12 @@
 
 Buyer-facing AI property search website powered by RealtyAvatar backend.
 
+> **Also in this repo:** [`impulse-reports/`](impulse-reports/README.md) — a
+> standalone mobile-first job reporting app for Impulse Electrical
+> Contractors (own Next.js app, own Supabase project, deployed as a separate
+> Vercel project with Root Directory = `impulse-reports`). It shares nothing
+> with the real-estate site.
+
 ## Architecture
 
 ```
