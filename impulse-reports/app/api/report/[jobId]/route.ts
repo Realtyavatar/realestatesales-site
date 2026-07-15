@@ -26,7 +26,7 @@ export async function GET(
   return new Response(Buffer.from(pdf), {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `inline; filename="${reportFileName(data.job)}"`,
+      "Content-Disposition": `attachment; filename="${reportFileName(data.job)}"`,
       "Cache-Control": "no-store",
     },
   });
