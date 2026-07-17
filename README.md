@@ -7,6 +7,10 @@ Buyer-facing AI property search website powered by RealtyAvatar backend.
 > Contractors (own Next.js app, own Supabase project, deployed as a separate
 > Vercel project with Root Directory = `impulse-reports`). It shares nothing
 > with the real-estate site.
+>
+> **And:** [`impulse-site/`](impulse-site/README.md) — the rebuilt public
+> marketing website for Impulse Electrical (impulseelectrical.com.au), also
+> standalone (Vercel Root Directory = `impulse-site`).
 
 ## Architecture
 

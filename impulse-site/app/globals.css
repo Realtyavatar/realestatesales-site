@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #e8720c;
+  --color-brand-dark: #c25e08;
+  --color-navy: #0b2545;
+  --color-navy-light: #13375f;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-navy font-sans antialiased;
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  .btn,
+  .btn-primary,
+  .btn-navy,
+  .btn-outline,
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold
+      min-h-[52px] px-6 text-base select-none active:scale-[0.98] transition;
+  }
+
+  .btn-primary {
+    @apply bg-brand text-white hover:bg-brand-dark;
+  }
+
+  .btn-navy {
+    @apply bg-navy text-white hover:bg-navy-light;
+  }
+
+  .btn-outline-light {
+    @apply border-2 border-white/40 text-white hover:bg-white/10;
+  }
+
+  .btn-outline {
+    @apply border-2 border-navy/20 bg-white text-navy hover:border-navy/40;
+  }
+
+  .card {
+    @apply rounded-2xl bg-white border border-gray-200 shadow-sm;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-base
+      focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30
+      min-h-[52px];
+  }
+
+  .label {
+    @apply block text-sm font-semibold text-navy/70 mb-1.5;
+  }
+
+  .section-title {
+    @apply text-3xl sm:text-4xl font-extrabold tracking-tight;
+  }
+
+  .eyebrow {
+    @apply text-sm font-bold uppercase tracking-widest text-brand;
+  }
+}
