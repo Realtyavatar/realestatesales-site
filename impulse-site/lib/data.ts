@@ -7,7 +7,13 @@ export const business = {
   phone: "0418 383 232",
   phoneHref: "tel:+61418383232",
   email: "info@impulseelectrical.com.au",
-  baseUrl: "https://impulseelectrical.com.au",
+  // The domain the site is served from. The existing Google rankings belong
+  // to electrician-morningtonpeninsula.com.au, so that stays the default —
+  // override with NEXT_PUBLIC_SITE_URL only if you deliberately migrate
+  // domains later (see README "Keeping your rankings").
+  baseUrl:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    "https://electrician-morningtonpeninsula.com.au",
   locality: "Dromana",
   region: "VIC",
   postcode: "3936",
@@ -116,7 +122,9 @@ export const services: Service[] = [
     ],
   },
   {
-    slug: "outdoor-garden-lighting",
+    // Slug matches the old site's URL (/services/outdoor-lighting) so the
+    // page keeps its existing Google ranking with no redirect needed.
+    slug: "outdoor-lighting",
     title: "Outdoor & Garden Lighting",
     short:
       "Garden, deck, pool and security lighting that makes Peninsula outdoor living usable all year.",
@@ -219,8 +227,16 @@ export function suburbSlug(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }
 
-export function suburbFromSlug(slug: string): string | undefined {
-  return suburbs.find((s) => suburbSlug(s) === slug);
+// Suburb pages live at /electrician-<suburb> — the exact URL structure the
+// old site ranks with on Google. Do not change this without 301 redirects.
+export function areaPath(name: string): string {
+  return `/electrician-${suburbSlug(name)}`;
+}
+
+export function suburbFromAreaSlug(slug: string): string | undefined {
+  if (!slug.startsWith("electrician-")) return undefined;
+  const rest = slug.slice("electrician-".length);
+  return suburbs.find((s) => suburbSlug(s) === rest);
 }
 
 // Real reviews only. Add more here as they come in (Google, Facebook,

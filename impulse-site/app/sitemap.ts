@@ -1,9 +1,16 @@
 import type { MetadataRoute } from "next";
-import { business, services, suburbs, suburbSlug } from "@/lib/data";
+import { areaPath, business, services, suburbs } from "@/lib/data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = business.baseUrl;
-  const staticPages = ["", "/services", "/areas", "/about", "/contact"].map(
+  const staticPages = [
+    "",
+    "/services",
+    "/areas",
+    "/about",
+    "/contact",
+    "/how-to-choose-the-right-electrician-on-the-mornington-peninsula",
+  ].map(
     (p) => ({
       url: `${base}${p}`,
       changeFrequency: "monthly" as const,
@@ -15,8 +22,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
-  const areaPages = suburbs.map((s) => ({
-    url: `${base}/areas/${suburbSlug(s)}`,
+  const areaPages = [
+    ...suburbs.map((s) => `${base}${areaPath(s)}`),
+    `${base}/electrician-mornington-peninsula`,
+  ].map((url) => ({
+    url,
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));

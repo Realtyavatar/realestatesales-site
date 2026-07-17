@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { business, reviews, suburbs, suburbSlug } from "@/lib/data";
+import { areaPath, business, reviews, suburbs } from "@/lib/data";
 import { Icon } from "@/components/icons";
 import {
   CtaBand,
@@ -167,7 +167,7 @@ export default function HomePage() {
             {suburbs.map((s) => (
               <Link
                 key={s}
-                href={`/areas/${suburbSlug(s)}`}
+                href={areaPath(s)}
                 className="rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-navy/80 transition hover:border-brand hover:text-brand"
               >
                 {s}

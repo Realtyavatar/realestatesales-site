@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { business, suburbs, suburbSlug } from "@/lib/data";
+import { areaPath, business, suburbs } from "@/lib/data";
 import { CtaBand } from "@/components/sections";
 import { Icon } from "@/components/icons";
 
@@ -32,7 +32,7 @@ export default function AreasPage() {
           {suburbs.map((s) => (
             <Link
               key={s}
-              href={`/areas/${suburbSlug(s)}`}
+              href={areaPath(s)}
               className="card flex items-center gap-3 p-4 font-semibold transition hover:border-brand hover:text-brand"
             >
               <Icon name="pin" className="h-5 w-5 shrink-0 text-brand" />

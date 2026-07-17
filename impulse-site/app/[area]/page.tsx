@@ -1,49 +1,75 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import {
+  areaPath,
   business,
   services,
   suburbs,
-  suburbFromSlug,
-  suburbSlug,
+  suburbFromAreaSlug,
 } from "@/lib/data";
 import { Icon } from "@/components/icons";
 import { CtaBand, ServiceCard, TrustBar } from "@/components/sections";
 
+// Suburb landing pages at /electrician-<suburb> — the exact URLs the old
+// site ranks with on Google, so existing rankings carry over 1:1 with no
+// redirects. Titles intentionally match the old pages' title format too.
+
+// The old site also ranks for /electrician-mornington-peninsula as its own
+// page, so it renders here as a region-wide landing page.
+const REGION_SLUG = "electrician-mornington-peninsula";
+const REGION_NAME = "Mornington Peninsula";
+
+function resolveSuburb(area: string): string | undefined {
+  if (area === REGION_SLUG) return REGION_NAME;
+  return suburbFromAreaSlug(area);
+}
+
 export function generateStaticParams() {
-  return suburbs.map((s) => ({ slug: suburbSlug(s) }));
+  return [
+    ...suburbs.map((s) => ({ area: areaPath(s).slice(1) })),
+    { area: REGION_SLUG },
+  ];
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ area: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const suburb = suburbFromSlug(slug);
+  const { area } = await params;
+  const suburb = resolveSuburb(area);
   if (!suburb) return {};
   return {
-    title: `Electrician ${suburb}`,
+    title: {
+      absolute: `Electrician ${suburb} | Impulse Electrical Contractors`,
+    },
     description: `Local A-Grade electrician servicing ${suburb} — residential, commercial, switchboards, EV chargers and 24/7 emergency call-outs. REC 25266. Call ${business.phone}.`,
-    alternates: { canonical: `/areas/${slug}` },
+    alternates: { canonical: `/${area}` },
   };
 }
 
 export default async function AreaPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ area: string }>;
 }) {
-  const { slug } = await params;
-  const suburb = suburbFromSlug(slug);
-  if (!suburb) notFound();
+  const { area } = await params;
+  const suburb = resolveSuburb(area);
+  if (!suburb) {
+    // An old suburb URL we don't have a page for shouldn't dead-end — send
+    // it to the areas index (301) so any link equity it has is kept.
+    if (area.startsWith("electrician-")) permanentRedirect("/areas");
+    notFound();
+  }
 
-  // Neighbouring suburbs = the closest entries in the (roughly geographic) list.
+  // Neighbouring suburbs = the closest entries in the (roughly geographic)
+  // list; the region-wide page links a spread of suburbs instead.
   const idx = suburbs.indexOf(suburb);
-  const nearby = suburbs
-    .slice(Math.max(0, idx - 3), idx + 4)
-    .filter((s) => s !== suburb);
+  const nearby =
+    idx === -1
+      ? suburbs.filter((_, i) => i % 5 === 0)
+      : suburbs.slice(Math.max(0, idx - 3), idx + 4).filter((s) => s !== suburb);
 
   return (
     <>
@@ -80,9 +106,7 @@ export default async function AreaPage({
 
       <section className="container-site py-16">
         <div className="max-w-3xl">
-          <h2 className="section-title">
-            What we do in {suburb}
-          </h2>
+          <h2 className="section-title">What we do in {suburb}</h2>
           <p className="mt-4 leading-relaxed text-navy/70">
             Every job is done by an A-Grade licensed electrician (
             {business.rec}), covered by {business.insurance.toLowerCase()}, and
@@ -106,7 +130,7 @@ export default async function AreaPage({
               {nearby.map((s) => (
                 <Link
                   key={s}
-                  href={`/areas/${suburbSlug(s)}`}
+                  href={areaPath(s)}
                   className="rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-navy/80 transition hover:border-brand hover:text-brand"
                 >
                   {s}
