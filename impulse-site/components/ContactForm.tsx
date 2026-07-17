@@ -35,11 +35,11 @@ export default function ContactForm() {
 
   if (status === "sent") {
     return (
-      <div className="card bg-gray-50 p-8 text-center">
-        <h3 className="text-xl font-extrabold">Thanks — we’ve got it.</h3>
-        <p className="mt-2 text-navy/70">
-          We’ll get back to you as soon as possible. If it’s urgent, call{" "}
-          <a href={business.phoneHref} className="font-bold text-brand">
+      <div className="bg-panel p-8">
+        <h3 className="display text-3xl">Got it.</h3>
+        <p className="mt-2 text-mute">
+          We’ll ring you back as soon as we can. If it’s urgent, call{" "}
+          <a href={business.phoneHref} className="phone-lockup text-brand">
             {business.phone}
           </a>{" "}
           — we answer 24/7.
@@ -106,14 +106,14 @@ export default function ContactForm() {
         <textarea id="message" name="message" required rows={4} className="field" />
       </div>
       {status === "error" && (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+        <p className="border-l-2 border-red-600 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           {error} You can also call {business.phone} or email {business.email}.
         </p>
       )}
       <button type="submit" disabled={status === "sending"} className="btn-primary w-full disabled:opacity-50">
         {status === "sending" ? "Sending…" : "Send enquiry"}
       </button>
-      <p className="text-center text-xs text-navy/50">
+      <p className="text-center text-xs text-mute">
         We only use your details to respond to this enquiry.
       </p>
     </form>
