@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { business, services } from "@/lib/data";
-import { CtaBand, PageHero, ServiceRow, TrustLine } from "@/components/sections";
+import { Icon } from "@/components/icons";
+import { CtaBand, ServiceCard, TrustBar } from "@/components/sections";
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -32,46 +33,72 @@ export default async function ServicePage({
   const service = services.find((s) => s.slug === slug);
   if (!service) notFound();
 
-  const others = services.filter((s) => s.slug !== service.slug);
+  const others = services.filter((s) => s.slug !== service.slug).slice(0, 4);
 
   return (
     <>
-      <PageHero
-        crumb={{ href: "/services", label: "Services" }}
-        title={service.title}
-        lede={service.hero}
-      />
-      <TrustLine />
+      <section className="bg-navy text-white">
+        <div className="container-site py-14 sm:py-20">
+          <nav className="text-sm text-white/60" aria-label="Breadcrumb">
+            <Link href="/services" className="hover:text-brand">
+              Services
+            </Link>{" "}
+            / <span className="text-white/90">{service.title}</span>
+          </nav>
+          <div className="mt-4 flex items-start gap-4">
+            <span className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand/20 text-brand sm:flex">
+              <Icon name={service.icon} className="h-7 w-7" />
+            </span>
+            <div>
+              <h1 className="max-w-2xl text-4xl font-extrabold tracking-tight sm:text-5xl">
+                {service.title}
+              </h1>
+              <p className="mt-2 text-lg text-white/75">
+                Mornington Peninsula · Frankston to Portsea
+              </p>
+            </div>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href={business.phoneHref} className="btn-primary">
+              <Icon name="phone" className="h-5 w-5" />
+              Call {business.phone}
+            </a>
+            <Link href="/contact" className="btn-outline-light">
+              Get a free quote
+            </Link>
+          </div>
+        </div>
+      </section>
 
-      <section className="container-site grid gap-12 py-14 sm:py-16 lg:grid-cols-[1fr_20rem]">
-        <div>
-          <h2 className="display text-3xl sm:text-4xl">What’s included</h2>
-          <ul className="mt-6 border-b border-line">
+      <TrustBar />
+
+      <section className="container-site grid gap-12 py-16 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <p className="text-lg leading-relaxed text-navy/80">{service.hero}</p>
+
+          <h2 className="mt-10 text-2xl font-extrabold">What’s included</h2>
+          <ul className="mt-5 space-y-3.5">
             {service.points.map((p) => (
-              <li key={p} className="grid grid-cols-[1.5rem_1fr] gap-3 border-t border-line py-4">
-                <span className="font-condensed text-lg font-bold text-brand" aria-hidden>
-                  —
-                </span>
-                <span className="leading-relaxed text-ink">{p}</span>
+              <li key={p} className="flex gap-3">
+                <Icon name="check" className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+                <span className="leading-relaxed text-navy/80">{p}</span>
               </li>
             ))}
           </ul>
 
           {service.faq && service.faq.length > 0 && (
             <>
-              <h2 className="display mt-14 text-3xl sm:text-4xl">Common questions</h2>
-              <div className="mt-6 border-b border-line">
+              <h2 className="mt-12 text-2xl font-extrabold">Common questions</h2>
+              <div className="mt-5 space-y-4">
                 {service.faq.map((f) => (
-                  <details key={f.q} className="group border-t border-line py-5">
-                    <summary className="cursor-pointer list-none marker:content-none">
-                      <span className="flex items-baseline justify-between gap-4">
-                        <span className="display text-xl sm:text-2xl">{f.q}</span>
-                        <span className="font-condensed text-2xl text-brand transition group-open:rotate-45" aria-hidden>
-                          +
-                        </span>
+                  <details key={f.q} className="card group p-5 open:border-brand/40">
+                    <summary className="cursor-pointer list-none font-bold marker:content-none">
+                      <span className="flex items-center justify-between gap-4">
+                        {f.q}
+                        <span className="text-brand transition group-open:rotate-45">+</span>
                       </span>
                     </summary>
-                    <p className="mt-3 max-w-2xl leading-relaxed text-mute">{f.a}</p>
+                    <p className="mt-3 leading-relaxed text-navy/70">{f.a}</p>
                   </details>
                 ))}
               </div>
@@ -79,34 +106,39 @@ export default async function ServicePage({
           )}
         </div>
 
-        <aside>
-          <div className="border-2 border-ink p-6">
-            <h3 className="display text-2xl">Get it sorted</h3>
-            <a href={business.phoneHref} className="phone-lockup mt-3 block text-4xl text-ink transition hover:text-brand">
+        <aside className="space-y-6">
+          <div className="card bg-navy p-6 text-white">
+            <h3 className="text-lg font-bold">Get it sorted today</h3>
+            <p className="mt-2 text-sm leading-relaxed text-white/70">
+              Call for a straight answer and an up-front price, any day of the
+              week.
+            </p>
+            <a href={business.phoneHref} className="btn-primary mt-4 w-full">
+              <Icon name="phone" className="h-5 w-5" />
               {business.phone}
             </a>
-            <p className="mt-1 font-condensed text-sm font-semibold uppercase tracking-[0.12em] text-mute">
-              Any day, any hour
-            </p>
-            <Link href="/contact" className="btn-ghost mt-5 w-full">
+            <Link href="/contact" className="btn-outline-light mt-3 w-full">
               Request a quote
             </Link>
-            <ul className="mt-6 space-y-1.5 border-t border-line pt-5 font-condensed text-[15px] font-semibold uppercase tracking-[0.08em] text-mute">
+          </div>
+          <div className="card p-6">
+            <h3 className="font-bold">Licensed &amp; insured</h3>
+            <ul className="mt-3 space-y-2 text-sm text-navy/70">
               <li>{business.rec}</li>
               <li>{business.licence}</li>
               <li>{business.insurance}</li>
-              <li>CES issued on completion</li>
+              <li>Certificate of Electrical Safety issued</li>
             </ul>
           </div>
         </aside>
       </section>
 
-      <section className="bg-panel">
-        <div className="container-site py-14">
-          <h2 className="display text-3xl sm:text-4xl">Other services</h2>
-          <div className="mt-6 border-b border-line">
-            {others.map((s, i) => (
-              <ServiceRow key={s.slug} service={s} index={i} />
+      <section className="border-t border-gray-200 bg-gray-50">
+        <div className="container-site py-16">
+          <h2 className="text-2xl font-extrabold">Other services</h2>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {others.map((s) => (
+              <ServiceCard key={s.slug} service={s} />
             ))}
           </div>
         </div>

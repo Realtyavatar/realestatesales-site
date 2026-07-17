@@ -1,22 +1,12 @@
 @import "tailwindcss";
 
-/* Van-signage direction: Barlow Condensed display caps over a plain white
-   ground, hairline rules, sharp corners, the brand orange used sparingly.
-   Fonts are self-hosted via @fontsource (imported in layout.tsx). */
-
 @theme {
   --color-brand: #e8720c;
   --color-brand-dark: #c25e08;
   --color-navy: #0b2545;
   --color-navy-light: #13375f;
-  --color-ink: #16202e;
-  --color-mute: #4e5a68;
-  --color-line: #d9dee4;
-  --color-panel: #f2f4f6;
-  --font-sans: "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
-  --font-condensed: "Barlow Condensed", "Arial Narrow", -apple-system,
-    BlinkMacSystemFont, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
 }
 
 html {
@@ -25,68 +15,58 @@ html {
 }
 
 body {
-  @apply bg-white text-ink font-sans antialiased;
+  @apply bg-white text-navy font-sans antialiased;
 }
 
 @layer components {
   .container-site {
-    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
-  }
-
-  /* Display type — signage caps */
-  .display {
-    @apply font-condensed font-bold uppercase leading-[0.95] tracking-[-0.01em];
-    text-wrap: balance;
-  }
-
-  .kicker {
-    @apply font-condensed text-base font-semibold uppercase tracking-[0.18em] text-brand;
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
   }
 
   .btn,
   .btn-primary,
-  .btn-ghost,
-  .btn-light {
-    @apply inline-flex min-h-[52px] select-none items-center justify-center gap-2
-      rounded-[2px] px-7 font-condensed text-lg font-semibold uppercase
-      tracking-[0.06em] transition active:scale-[0.99];
+  .btn-navy,
+  .btn-outline,
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold
+      min-h-[52px] px-6 text-base select-none active:scale-[0.98] transition;
   }
 
   .btn-primary {
     @apply bg-brand text-white hover:bg-brand-dark;
   }
 
-  .btn-ghost {
-    @apply border-2 border-ink text-ink hover:bg-ink hover:text-white;
+  .btn-navy {
+    @apply bg-navy text-white hover:bg-navy-light;
   }
 
-  .btn-light {
-    @apply border-2 border-white/70 text-white hover:bg-white hover:text-navy;
+  .btn-outline-light {
+    @apply border-2 border-white/40 text-white hover:bg-white/10;
+  }
+
+  .btn-outline {
+    @apply border-2 border-navy/20 bg-white text-navy hover:border-navy/40;
+  }
+
+  .card {
+    @apply rounded-2xl bg-white border border-gray-200 shadow-sm;
   }
 
   .field {
-    @apply min-h-[52px] w-full rounded-[2px] border border-line bg-white px-4
-      py-3 text-base focus:border-ink focus:outline-none focus:ring-2
-      focus:ring-brand/30;
+    @apply w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-base
+      focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30
+      min-h-[52px];
   }
 
   .label {
-    @apply mb-1.5 block font-condensed text-sm font-semibold uppercase
-      tracking-[0.1em] text-mute;
+    @apply block text-sm font-semibold text-navy/70 mb-1.5;
   }
 
-  /* 45° safety-stripe rule, used as a thin section divider */
-  .hazard {
-    height: 6px;
-    background: repeating-linear-gradient(
-      -45deg,
-      var(--color-brand) 0 10px,
-      var(--color-navy) 10px 20px
-    );
+  .section-title {
+    @apply text-3xl sm:text-4xl font-extrabold tracking-tight;
   }
 
-  .phone-lockup {
-    @apply font-condensed font-bold tracking-[0.01em];
-    font-variant-numeric: tabular-nums;
+  .eyebrow {
+    @apply text-sm font-bold uppercase tracking-widest text-brand;
   }
 }
