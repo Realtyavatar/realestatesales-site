@@ -7,6 +7,13 @@ Buyer-facing AI property search website powered by RealtyAvatar backend.
 > Contractors (own Next.js app, own Supabase project, deployed as a separate
 > Vercel project with Root Directory = `impulse-reports`). It shares nothing
 > with the real-estate site.
+>
+> **And:** [`airbnb-inspections/`](airbnb-inspections/README.md) — a
+> standalone mobile-first Airbnb checkout inspection app (checklists,
+> timestamped photos, damage flags, PDF reports; own Next.js app, own
+> Supabase project, deployed as a separate Vercel project with Root
+> Directory = `airbnb-inspections`). It also shares nothing with the
+> real-estate site.
 
 ## Architecture
 
