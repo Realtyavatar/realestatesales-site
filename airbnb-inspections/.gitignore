@@ -1,0 +1,11 @@
+node_modules
+.next
+.env*
+!.env.example
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+
+# e2e artifacts
+e2e/shot-*.png
+e2e/*.pdf
