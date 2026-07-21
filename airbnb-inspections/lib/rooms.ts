@@ -1,9 +1,10 @@
 import type { RoomType } from "./types";
 
 // Room templates for a checkout inspection. Every new inspection gets these
-// four rooms; each room's checklist covers the items relevant to it, and
-// together they cover: cleanliness, linens changed, soap restocked, coffee
-// and tea present, toilet paper stocked, and appliances cleaned.
+// rooms/areas; each checklist covers the items relevant to it, and together
+// they cover: cleanliness, linens changed, soap restocked, coffee and tea
+// present, toilet paper stocked, appliances cleaned, bins, the BBQ/outdoor
+// area and the backyard.
 export interface RoomTemplate {
   room_type: RoomType;
   name: string;
@@ -42,6 +43,16 @@ export const ROOM_TEMPLATES: RoomTemplate[] = [
     ],
   },
   {
+    room_type: "powder",
+    name: "Powder room",
+    items: [
+      "Cleanliness — toilet, sink and mirror cleaned",
+      "Soap restocked — hand soap topped up",
+      "Toilet paper stocked — spare roll in place",
+      "Hand towel replaced with fresh one",
+    ],
+  },
+  {
     room_type: "living",
     name: "Living area",
     items: [
@@ -49,6 +60,25 @@ export const ROOM_TEMPLATES: RoomTemplate[] = [
       "Appliances cleaned and working — TV, remote, air-con, Wi-Fi router",
       "Throws and cushion covers fresh",
       "Guest information / house manual in place",
+    ],
+  },
+  {
+    room_type: "outdoor",
+    name: "BBQ & outdoor area",
+    items: [
+      "BBQ cleaned — grill plates, hood and drip tray",
+      "Gas bottle checked — enough for next stay",
+      "Outdoor furniture wiped down and arranged",
+      "Outdoor area swept, no rubbish or cigarette butts",
+    ],
+  },
+  {
+    room_type: "backyard",
+    name: "Backyard",
+    items: [
+      "Bins emptied, cleaned and put out / brought in",
+      "Lawn and paths tidy, no rubbish or guest items left",
+      "Outdoor lights and gates working, yard secure",
     ],
   },
 ];
@@ -59,9 +89,15 @@ export function roomIcon(roomType: RoomType): string {
       return "🛏️";
     case "bathroom":
       return "🛁";
+    case "powder":
+      return "🚽";
     case "kitchen":
       return "🍳";
     case "living":
       return "🛋️";
+    case "outdoor":
+      return "🍖";
+    case "backyard":
+      return "🌳";
   }
 }

@@ -20,12 +20,14 @@ storage) + Tailwind CSS 4 + pdf-lib. Deploys to Vercel.
 
 - **Startup prompt** — when the app opens it asks you to begin a checkout
   inspection (once per session; there's also an always-visible button). Enter
-  the property name/address and it creates the inspection with four rooms.
-- **Rooms** — every inspection gets a Bedroom, Bathroom, Kitchen and Living
-  area, each with a checkout checklist tailored to the room. Together they
-  cover: cleanliness, linens changed, soap restocked, coffee and tea present,
-  toilet paper stocked, and appliances cleaned. Tick items off with one tap —
-  everything autosaves and syncs to the cloud as you go.
+  the property name/address and it creates the inspection with all rooms.
+- **Rooms** — every inspection gets a Bedroom, Bathroom, Powder room,
+  Kitchen, Living area, BBQ & outdoor area and Backyard, each with a
+  checkout checklist tailored to it. Together they cover: cleanliness,
+  linens changed, soap restocked, coffee and tea present, toilet paper
+  stocked, appliances cleaned, bins emptied, BBQ cleaned and the backyard
+  tidy. Tick items off with one tap — everything autosaves and syncs to the
+  cloud as you go.
 - **Timestamped photos** — take photos with the device camera (or pick from
   the gallery), multiple per room, optional captions. The capture date and
   time is **burned into the bottom-right corner of the image** and stored in
