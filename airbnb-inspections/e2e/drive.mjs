@@ -102,18 +102,22 @@ async function main() {
   await page.screenshot({ path: shot("02-startup-prompt") });
   console.log("OK: startup prompt auto-opened");
 
-  step("4. begin inspection -> four rooms created");
+  step("4. begin inspection -> all rooms created");
   await page.fill("#property-name", "Beach House");
   await page.fill("#property-address", "12 Ocean St, Torquay VIC");
   await page.click("form button[type=submit]");
   await page.waitForURL(/inspections\/[0-9a-f-]+$/);
-  for (const room of ["Bedroom", "Bathroom", "Kitchen", "Living area"]) {
+  const ROOMS = [
+    "Bedroom", "Bathroom", "Powder room", "Kitchen",
+    "Living area", "BBQ & outdoor area", "Backyard",
+  ];
+  for (const room of ROOMS) {
     await page.waitForSelector(`text=${room}`);
   }
   await page.screenshot({ path: shot("03-inspection-overview"), fullPage: true });
   const inspectionUrl = page.url();
   const inspectionId = inspectionUrl.match(/inspections\/([0-9a-f-]+)/)[1];
-  console.log("OK: inspection created with 4 rooms", inspectionId);
+  console.log(`OK: inspection created with ${ROOMS.length} rooms`, inspectionId);
 
   step("5. bathroom checklist: requested items present, ticks persist");
   await page.click("text=Bathroom");

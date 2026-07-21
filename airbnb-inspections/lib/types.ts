@@ -1,6 +1,13 @@
 export type InspectionStatus = "in_progress" | "complete";
 export type DamageSeverity = "minor" | "moderate" | "severe";
-export type RoomType = "bedroom" | "bathroom" | "kitchen" | "living";
+export type RoomType =
+  | "bedroom"
+  | "bathroom"
+  | "powder"
+  | "kitchen"
+  | "living"
+  | "outdoor"
+  | "backyard";
 
 export interface ChecklistItem {
   id: string;
