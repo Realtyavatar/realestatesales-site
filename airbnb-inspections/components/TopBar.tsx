@@ -16,7 +16,7 @@ export default function TopBar({
           <Link
             href={backHref}
             aria-label="Back"
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl active:bg-ink-light"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg active:bg-ink-light"
           >
             <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M15 18l-6-6 6-6" />
@@ -25,19 +25,24 @@ export default function TopBar({
         ) : (
           <div className="flex h-12 w-10 shrink-0 items-center justify-center">
             <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden>
-              <path d="M32 12 12 30h5v20h30V30h5L32 12z" fill="#ff385c" />
-              <path
-                d="M25 36l5 5 10-10"
-                fill="none"
-                stroke="#fff"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <g transform="rotate(-8 32 32)">
+                <rect x="16" y="12" width="32" height="42" rx="6" fill="#edf1ee" />
+                <circle cx="32" cy="20" r="3.2" fill="#11363b" opacity="0.85" />
+                <path
+                  d="M24 37l6 6 11-12"
+                  fill="none"
+                  stroke="#0e7d71"
+                  strokeWidth="4.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </g>
             </svg>
           </div>
         )}
-        <h1 className="min-w-0 flex-1 truncate text-lg font-bold">{title}</h1>
+        <h1 className="display min-w-0 flex-1 truncate text-base leading-tight">
+          {title}
+        </h1>
         {right && <div className="flex shrink-0 items-center gap-2">{right}</div>}
       </div>
     </header>

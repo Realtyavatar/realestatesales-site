@@ -32,22 +32,25 @@ export default function LoginPage() {
     <main className="min-h-dvh bg-ink flex flex-col justify-center px-6 py-10">
       <div className="mx-auto w-full max-w-sm">
         <div className="mb-10 text-center">
-          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-ink-light">
-            <svg viewBox="0 0 64 64" className="h-12 w-12" aria-hidden>
-              <path d="M32 12 12 30h5v20h30V30h5L32 12z" fill="#ff385c" />
-              <path
-                d="M25 36l5 5 10-10"
-                fill="none"
-                stroke="#fff"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+          <div className="mx-auto mb-5 h-24 w-24">
+            <svg viewBox="0 0 64 64" className="h-24 w-24" aria-hidden>
+              <g transform="rotate(-8 32 32)">
+                <rect x="16" y="12" width="32" height="42" rx="6" fill="#edf1ee" />
+                <circle cx="32" cy="20" r="3.2" fill="#11363b" opacity="0.85" />
+                <path
+                  d="M24 37l6 6 11-12"
+                  fill="none"
+                  stroke="#0e7d71"
+                  strokeWidth="4.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </g>
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-white">Checkout Inspections</h1>
-          <p className="mt-2 text-white/60">
-            Airbnb property inspection checklists
+          <h1 className="display text-2xl text-white">Checkout Inspections</h1>
+          <p className="mt-3 text-white/60">
+            Walk through. Tick off. Stamp it done.
           </p>
         </div>
 

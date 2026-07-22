@@ -3,7 +3,7 @@ import TopBar from "@/components/TopBar";
 import StartInspectionPrompt from "@/components/StartInspectionPrompt";
 import SignOutButton from "@/components/SignOutButton";
 import { supabaseServer } from "@/lib/supabase/server";
-import { formatDateTime, statusLabel } from "@/lib/format";
+import { formatDateTime } from "@/lib/format";
 import type { Inspection } from "@/lib/types";
 
 export default async function InspectionsPage() {
@@ -22,7 +22,7 @@ export default async function InspectionsPage() {
       <main className="mx-auto max-w-3xl px-3 py-4">
         <StartInspectionPrompt />
 
-        <h2 className="mb-2 mt-6 text-sm font-semibold uppercase tracking-wide text-ink/50">
+        <h2 className="display mb-2 mt-6 text-xs text-ink/50">
           Past inspections
         </h2>
 
@@ -50,18 +50,19 @@ export default async function InspectionsPage() {
                       </p>
                     )}
                     <p className="mt-0.5 text-sm text-ink/50">
-                      Started {formatDateTime(inspection.started_at)}
+                      Started{" "}
+                      <span className="stamp-time">
+                        {formatDateTime(inspection.started_at)}
+                      </span>
                     </p>
                   </div>
-                  <span
-                    className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${
-                      inspection.status === "complete"
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-amber-100 text-amber-700"
-                    }`}
-                  >
-                    {statusLabel(inspection.status)}
-                  </span>
+                  {inspection.status === "complete" ? (
+                    <span className="stamp shrink-0 text-[0.6rem]">Complete</span>
+                  ) : (
+                    <span className="stamp stamp-tag shrink-0 text-[0.6rem]">
+                      In progress
+                    </span>
+                  )}
                 </Link>
               </li>
             ))}

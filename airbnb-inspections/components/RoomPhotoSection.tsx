@@ -123,14 +123,14 @@ export default function RoomPhotoSection({
   return (
     <section className="card p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-lg font-bold">Photos</h2>
-        <span className="text-sm text-ink/50">{photos.length}</span>
+        <h2 className="display text-sm">Photos</h2>
+        <span className="font-mono text-sm text-ink/50">{photos.length}</span>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         {photos.map((photo) => (
-          <figure key={photo.id} className="overflow-hidden rounded-xl border border-gray-200">
-            <div className="relative aspect-square bg-gray-100">
+          <figure key={photo.id} className="overflow-hidden rounded-xl border border-ink/10">
+            <div className="relative aspect-square bg-paper">
               {urls[photo.storage_path] ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -155,11 +155,11 @@ export default function RoomPhotoSection({
               </button>
             </div>
             <figcaption className="p-2">
-              <p className="mb-1 px-1 text-xs text-ink/50">
+              <p className="stamp-time mb-1 px-1 text-xs text-ink/60">
                 {formatDateTime(photo.taken_at)}
               </p>
               <input
-                className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:border-brand focus:outline-none"
+                className="w-full rounded-lg border border-ink/15 px-3 py-2.5 text-sm focus:border-brand focus:outline-none"
                 placeholder="Caption (optional)"
                 value={photo.caption}
                 onChange={(e) => setCaption(photo.id, e.target.value)}
