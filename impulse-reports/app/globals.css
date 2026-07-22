@@ -1,12 +1,23 @@
 @import "tailwindcss";
 
+/* Impulse Reports visual system — "switchboard" identity.
+   Signage type (Barlow), engraved traffolyte section tags, breaker-style
+   toggles. Brand: navy #0B2545 / orange #E8720C. Big targets for gloves. */
+
 @theme {
   --color-brand: #e8720c;
   --color-brand-dark: #c25e08;
   --color-navy: #0b2545;
   --color-navy-light: #13375f;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+  --color-steel: #10141a; /* traffolyte tag black */
+  --color-page: #eef1f5; /* cool navy-biased ground */
+  --color-line: #d5dce5;
+  --font-sans: "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Barlow Semi Condensed", "Barlow", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas,
+    monospace;
 }
 
 html {
@@ -14,15 +25,50 @@ html {
 }
 
 body {
-  @apply bg-gray-50 text-navy font-sans antialiased;
+  @apply bg-page text-navy font-sans antialiased;
 }
 
-/* Reusable touch-friendly controls (big targets for gloved hands) */
+:is(a, button, input, select, textarea, [role="switch"]):focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
 @layer components {
-  .field {
-    @apply w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-base
+  /* Engraved switchboard label — section headings */
+  .section-tag {
+    @apply inline-flex items-center gap-2 self-start rounded-[4px] bg-steel
+      px-3 py-1.5 text-[13px] font-semibold uppercase tracking-[0.14em]
+      text-white;
+    font-family: var(--font-display);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.45);
+  }
+
+  .section-tag::before {
+    content: "";
+    @apply h-1.5 w-1.5 shrink-0 rounded-full bg-brand;
+  }
+
+  .field,
+  .field-mono {
+    @apply w-full rounded-lg border border-line bg-white px-4 py-3.5 text-base
       focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30
       min-h-[52px];
+  }
+
+  .field-mono {
+    font-family: var(--font-mono);
+    font-size: 15px;
   }
 
   .btn,
@@ -30,32 +76,82 @@ body {
   .btn-navy,
   .btn-outline,
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold
-      min-h-[52px] px-5 text-base select-none active:scale-[0.98] transition
+    @apply inline-flex items-center justify-center gap-2 rounded-lg
+      min-h-[52px] px-5 text-[15px] font-bold uppercase tracking-[0.06em]
+      select-none active:scale-[0.99] transition
       disabled:opacity-50 disabled:pointer-events-none;
+    font-family: var(--font-display);
   }
 
   .btn-primary {
     @apply bg-brand text-white active:bg-brand-dark;
+    box-shadow: 0 2px 0 var(--color-brand-dark);
   }
 
   .btn-navy {
     @apply bg-navy text-white active:bg-navy-light;
+    box-shadow: 0 2px 0 #06152b;
   }
 
   .btn-outline {
-    @apply border-2 border-navy/20 bg-white text-navy;
+    @apply border-2 border-navy/25 bg-white text-navy active:bg-page;
   }
 
   .btn-danger {
-    @apply bg-red-600 text-white;
+    @apply bg-red-700 text-white active:bg-red-800;
+    box-shadow: 0 2px 0 #7f1d1d;
   }
 
   .card {
-    @apply rounded-2xl bg-white border border-gray-200 shadow-sm;
+    @apply rounded-[10px] border border-line bg-white;
   }
 
   .label {
-    @apply block text-sm font-semibold text-navy/70 mb-1.5;
+    @apply mb-1.5 block text-[12.5px] font-semibold uppercase
+      tracking-[0.08em] text-navy/60;
+    font-family: var(--font-display);
+  }
+
+  /* Breaker-style toggle: raised when off, pressed-in when on */
+  .rocker {
+    @apply min-h-[52px] rounded-md border text-sm font-bold uppercase
+      tracking-[0.06em] transition;
+    font-family: var(--font-display);
+  }
+
+  .rocker-off {
+    @apply border-line bg-white text-navy/55 active:bg-page;
+    box-shadow: 0 2px 0 rgba(11, 37, 69, 0.15);
+  }
+
+  .rocker-on-pass {
+    @apply border-emerald-900/40 bg-emerald-700 text-white;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35);
+  }
+
+  .rocker-on-fail {
+    @apply border-red-900/40 bg-red-700 text-white;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35);
+  }
+
+  .rocker-on-na {
+    @apply border-slate-700/40 bg-slate-500 text-white;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35);
+  }
+
+  .rocker-on-navy {
+    @apply border-navy bg-navy text-white;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Test-tag style status pill */
+  .tag-pill {
+    @apply inline-flex items-center rounded-[4px] px-2.5 py-1 text-[11px]
+      font-bold uppercase tracking-[0.1em];
+    font-family: var(--font-display);
+  }
+
+  .mono {
+    font-family: var(--font-mono);
   }
 }

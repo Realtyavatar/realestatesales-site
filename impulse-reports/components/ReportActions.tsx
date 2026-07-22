@@ -36,7 +36,7 @@ export default function ReportActions({ job }: { job: Job }) {
 
   return (
     <section className="card space-y-3 p-4">
-      <h2 className="text-lg font-bold">Report</h2>
+      <h2 className="section-tag">Report</h2>
       <a href={`/api/report/${job.id}`} download className="btn-primary w-full">
         Download PDF report
       </a>

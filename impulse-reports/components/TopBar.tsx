@@ -10,7 +10,7 @@ export default function TopBar({
   right?: React.ReactNode;
 }) {
   return (
-    <header className="sticky top-0 z-20 bg-navy text-white shadow-md">
+    <header className="sticky top-0 z-20 border-b-[3px] border-brand bg-navy text-white shadow-md">
       <div className="mx-auto flex h-16 max-w-3xl items-center gap-2 px-3">
         {backHref ? (
           <Link
@@ -29,7 +29,12 @@ export default function TopBar({
             </svg>
           </div>
         )}
-        <h1 className="min-w-0 flex-1 truncate text-lg font-bold">{title}</h1>
+        <h1
+          className="min-w-0 flex-1 truncate text-xl font-bold"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          {title}
+        </h1>
         {right && <div className="flex shrink-0 items-center gap-2">{right}</div>}
       </div>
     </header>

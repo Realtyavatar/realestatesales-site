@@ -119,7 +119,7 @@ export default function PhotoSection({
   return (
     <section className="card p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-lg font-bold">Photos</h2>
+        <h2 className="section-tag">Photos</h2>
         <span className="text-sm text-navy/50">{photos.length}</span>
       </div>
 

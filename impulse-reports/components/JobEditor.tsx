@@ -128,10 +128,8 @@ export default function JobEditor({
               <button
                 key={s}
                 onClick={() => set("status", s)}
-                className={`min-h-[52px] rounded-xl px-2 text-sm font-bold transition ${
-                  job.status === s
-                    ? "bg-navy text-white"
-                    : "bg-gray-100 text-navy/60 active:bg-gray-200"
+                className={`rocker px-2 ${
+                  job.status === s ? "rocker-on-navy" : "rocker-off"
                 }`}
               >
                 {statusLabel(s)}
@@ -142,7 +140,7 @@ export default function JobEditor({
 
         {/* Client & site */}
         <section className="card space-y-4 p-4">
-          <h2 className="text-lg font-bold">Client &amp; site</h2>
+          <h2 className="section-tag">Client &amp; site</h2>
           <div>
             <label className="label" htmlFor="site_address">Site address</label>
             <input
@@ -205,7 +203,7 @@ export default function JobEditor({
               <input
                 id="job_date"
                 type="date"
-                className="field"
+                className="field-mono"
                 value={job.job_date}
                 onChange={(e) => set("job_date", e.target.value)}
               />
@@ -226,7 +224,7 @@ export default function JobEditor({
         {/* Boards */}
         <section className="card p-4">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-lg font-bold">Boards</h2>
+            <h2 className="section-tag">Boards</h2>
             <span className="text-sm text-navy/50">{boards.length}</span>
           </div>
           <ul className="space-y-2">
@@ -261,7 +259,7 @@ export default function JobEditor({
 
         {/* Defects register */}
         <section className="card p-4">
-          <h2 className="mb-3 text-lg font-bold">Defects register</h2>
+          <h2 className="section-tag mb-3">Defects register</h2>
           {defectBoards.length === 0 ? (
             <p className="text-navy/50">No defects recorded. Boards marked “Defects found” appear here automatically.</p>
           ) : (
@@ -290,7 +288,7 @@ export default function JobEditor({
 
         {/* Recommendations */}
         <section className="card p-4">
-          <h2 className="mb-2 text-lg font-bold">Recommendations</h2>
+          <h2 className="section-tag mb-2">Recommendations</h2>
           <p className="mb-2 text-sm text-navy/50">Appears as the final section of the PDF report.</p>
           <textarea
             rows={4}
@@ -303,7 +301,7 @@ export default function JobEditor({
         {/* Variations */}
         <section className="card p-4">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-lg font-bold">Variations</h2>
+            <h2 className="section-tag">Variations</h2>
             <span className="text-sm text-navy/50">{variations.length}</span>
           </div>
           <ul className="space-y-2">
@@ -342,10 +340,10 @@ export default function JobEditor({
         <ReportActions job={job} />
 
         <div className="pt-2">
-          <span className={`mr-2 rounded-full px-3 py-1 text-xs font-bold ${statusPillClasses(job.status)}`}>
+          <span className={`mr-2 ${statusPillClasses(job.status)}`}>
             {statusLabel(job.status)}
           </span>
-          <span className="text-xs text-navy/40">
+          <span className="mono text-xs text-navy/40">
             {jobTypeLabel(job.job_type)} · created {formatDate(job.created_at)}
           </span>
         </div>

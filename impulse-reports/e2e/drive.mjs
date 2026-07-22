@@ -157,7 +157,7 @@ async function main() {
     .first()
     .locator("button:has-text('N/A')")
     .getAttribute("class");
-  if (!naClass.includes("bg-gray-500")) {
+  if (!naClass.includes("rocker-on-na")) {
     throw new Error("checklist result lost after immediate navigation (flush-on-unmount broken)");
   }
   console.log("OK: checklist result survived tap-then-immediately-leave");

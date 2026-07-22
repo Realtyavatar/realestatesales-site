@@ -146,7 +146,7 @@ export default function VariationEditor({
 
         {/* Details */}
         <section className="card space-y-4 p-4">
-          <h2 className="text-lg font-bold">Extra works</h2>
+          <h2 className="section-tag">Extra works</h2>
           <div>
             <label className="label" htmlFor="description">Description of the extra work</label>
             <textarea
@@ -166,10 +166,8 @@ export default function VariationEditor({
               <button
                 disabled={signed}
                 onClick={() => set("pricing_mode", "fixed")}
-                className={`min-h-[52px] rounded-xl font-bold transition ${
-                  variation.pricing_mode === "fixed"
-                    ? "bg-navy text-white"
-                    : "bg-gray-100 text-navy/60"
+                className={`rocker ${
+                  variation.pricing_mode === "fixed" ? "rocker-on-navy" : "rocker-off"
                 }`}
               >
                 Fixed price
@@ -177,10 +175,8 @@ export default function VariationEditor({
               <button
                 disabled={signed}
                 onClick={() => set("pricing_mode", "hourly")}
-                className={`min-h-[52px] rounded-xl font-bold transition ${
-                  variation.pricing_mode === "hourly"
-                    ? "bg-navy text-white"
-                    : "bg-gray-100 text-navy/60"
+                className={`rocker ${
+                  variation.pricing_mode === "hourly" ? "rocker-on-navy" : "rocker-off"
                 }`}
               >
                 Hourly rate
@@ -198,7 +194,7 @@ export default function VariationEditor({
                   inputMode="decimal"
                   min="0"
                   step="0.01"
-                  className="field disabled:bg-gray-100"
+                  className="field-mono disabled:bg-gray-100"
                   value={variation.price_ex_gst ?? ""}
                   disabled={signed}
                   onChange={(e) =>
@@ -215,7 +211,7 @@ export default function VariationEditor({
                   inputMode="decimal"
                   min="0"
                   step="0.01"
-                  className="field disabled:bg-gray-100"
+                  className="field-mono disabled:bg-gray-100"
                   value={variation.hourly_rate_ex_gst ?? ""}
                   disabled={signed}
                   onChange={(e) =>
@@ -229,7 +225,7 @@ export default function VariationEditor({
               <input
                 id="variation_date"
                 type="date"
-                className="field disabled:bg-gray-100"
+                className="field-mono disabled:bg-gray-100"
                 value={variation.variation_date}
                 disabled={signed}
                 onChange={(e) => set("variation_date", e.target.value)}
@@ -247,7 +243,7 @@ export default function VariationEditor({
 
         {/* Authorisation */}
         <section className="card space-y-4 border-2 border-navy/20 p-4">
-          <h2 className="text-lg font-bold">Client authorisation</h2>
+          <h2 className="section-tag">Client authorisation</h2>
           <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-navy/80">
             {VARIATION_AUTHORISATION_TEXT.map((line, i) => (
               <li key={i}>{line}</li>

@@ -98,7 +98,7 @@ export default function SettingsForm({
 
       <main className="mx-auto max-w-3xl space-y-6 px-3 py-4">
         <section className="card space-y-4 p-4">
-          <h2 className="text-lg font-bold">Business details</h2>
+          <h2 className="section-tag">Business details</h2>
           <p className="text-sm text-navy/50">These appear on the cover page of every PDF report.</p>
           <div>
             <label className="label" htmlFor="business_name">Business name</label>
@@ -114,7 +114,7 @@ export default function SettingsForm({
               <label className="label" htmlFor="rec_number">REC number</label>
               <input
                 id="rec_number"
-                className="field"
+                className="field-mono"
                 value={settings.rec_number}
                 onChange={(e) => set("rec_number", e.target.value)}
               />
@@ -123,7 +123,7 @@ export default function SettingsForm({
               <label className="label" htmlFor="abn">ABN</label>
               <input
                 id="abn"
-                className="field"
+                className="field-mono"
                 value={settings.abn}
                 onChange={(e) => set("abn", e.target.value)}
               />
@@ -163,7 +163,7 @@ export default function SettingsForm({
         </section>
 
         <section className="card space-y-3 p-4">
-          <h2 className="text-lg font-bold">Logo</h2>
+          <h2 className="section-tag">Logo</h2>
           {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -194,7 +194,7 @@ export default function SettingsForm({
         </section>
 
         <section className="card space-y-3 p-4">
-          <h2 className="text-lg font-bold">Default checklist</h2>
+          <h2 className="section-tag">Default checklist</h2>
           <p className="text-sm text-navy/50">
             Every new board starts with these items. You can still add or remove items on each board.
           </p>
