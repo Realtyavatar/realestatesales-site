@@ -46,24 +46,37 @@ export default async function InspectionPage({
         backHref="/inspections"
       />
       <main className="mx-auto max-w-3xl space-y-4 px-3 py-4">
-        <section className="card p-4">
+        <section
+          className={`card relative p-4 ${
+            inspection.status === "complete" ? "pr-32" : ""
+          }`}
+        >
           <p className="text-sm text-ink/60">
-            Checkout inspection · Started {formatDateTime(inspection.started_at)}
+            Checkout inspection · Started{" "}
+            <span className="stamp-time">
+              {formatDateTime(inspection.started_at)}
+            </span>
           </p>
           {inspection.property_address && (
             <p className="mt-1 font-semibold">{inspection.property_address}</p>
           )}
           {inspection.completed_at && (
-            <p className="mt-1 text-sm font-semibold text-emerald-700">
-              Completed {formatDateTime(inspection.completed_at)}
+            <p className="mt-1 text-sm font-semibold text-brand">
+              Completed{" "}
+              <span className="stamp-time">
+                {formatDateTime(inspection.completed_at)}
+              </span>
             </p>
+          )}
+          {inspection.status === "complete" && (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2">
+              <span className="stamp text-sm">Complete</span>
+            </span>
           )}
         </section>
 
         <section>
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink/50">
-            Rooms
-          </h2>
+          <h2 className="display mb-2 text-xs text-ink/50">Rooms</h2>
           <ul className="space-y-3">
             {rooms.map((room) => {
               const checked = room.checklist.filter((i) => i.checked).length;
@@ -75,9 +88,10 @@ export default async function InspectionPage({
                 <li key={room.id}>
                   <Link
                     href={`/inspections/${inspection.id}/rooms/${room.id}`}
-                    className="card flex items-center gap-4 p-4 active:bg-gray-50"
+                    className="card flex items-center gap-3 p-4 active:bg-paper"
                   >
-                    <span className="text-3xl" aria-hidden>
+                    <span className="tag-hole" aria-hidden />
+                    <span className="text-2xl" aria-hidden>
                       {roomIcon(room.room_type)}
                     </span>
                     <div className="min-w-0 flex-1">
@@ -86,22 +100,23 @@ export default async function InspectionPage({
                         {checked}/{total} checked · {roomPhotos} photo
                         {roomPhotos === 1 ? "" : "s"}
                         {roomFlags > 0 && (
-                          <span className="font-semibold text-red-600">
+                          <span className="font-semibold text-flag">
                             {" "}
                             · {roomFlags} damage
                           </span>
                         )}
                       </p>
                     </div>
-                    <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
-                        done
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-gray-100 text-ink/40"
-                      }`}
-                    >
-                      ✓
-                    </span>
+                    {done ? (
+                      <span className="stamp shrink-0 text-[0.6rem]">Ready</span>
+                    ) : (
+                      <span
+                        aria-hidden
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-paper text-sm font-bold text-ink/30"
+                      >
+                        ✓
+                      </span>
+                    )}
                   </Link>
                 </li>
               );

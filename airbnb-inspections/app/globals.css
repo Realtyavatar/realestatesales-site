@@ -1,12 +1,27 @@
 @import "tailwindcss";
 
+/*
+ * Housekeeping-tag design system.
+ *
+ * The app's world is housekeeping: laminated room-ready cards, luggage tags,
+ * inspection stamps. Palette is coastal utility — sea-glass paper, deep
+ * petrol ink, eucalyptus-teal actions, manila-tag yellow for in-progress.
+ * Red is reserved exclusively for damage. All dates/times render in mono
+ * (IBM Plex Mono): timestamps are evidence, and they should look stamped.
+ */
 @theme {
-  --color-brand: #ff385c;
-  --color-brand-dark: #d90b41;
-  --color-ink: #232323;
-  --color-ink-light: #3d3d3d;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+  --color-paper: #edf1ee;
+  --color-card: #ffffff;
+  --color-ink: #11363b;
+  --color-ink-light: #1c4a50;
+  --color-brand: #0e7d71;
+  --color-brand-dark: #0a5f56;
+  --color-tag: #f0b429;
+  --color-flag: #c2372b;
+  --font-sans: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Archivo Black", "Archivo", -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 html {
@@ -14,13 +29,27 @@ html {
 }
 
 body {
-  @apply bg-gray-50 text-ink font-sans antialiased;
+  @apply bg-paper text-ink font-sans antialiased;
 }
 
-/* Reusable touch-friendly controls (built for a phone in one hand) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Reusable touch-friendly controls (built for a phone in one hand, outdoors) */
 @layer components {
+  /* Signage-style headings: heavy, uppercase, tight */
+  .display {
+    @apply font-display uppercase tracking-wide;
+  }
+
   .field {
-    @apply w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-base
+    @apply w-full rounded-lg border border-ink/20 bg-white px-4 py-3.5 text-base
       focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30
       min-h-[52px];
   }
@@ -30,7 +59,7 @@ body {
   .btn-ink,
   .btn-outline,
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-bold
       min-h-[52px] px-5 text-base select-none active:scale-[0.98] transition
       disabled:opacity-50 disabled:pointer-events-none;
   }
@@ -44,18 +73,49 @@ body {
   }
 
   .btn-outline {
-    @apply border-2 border-ink/20 bg-white text-ink;
+    @apply border-2 border-ink/25 bg-white text-ink;
   }
 
   .btn-danger {
-    @apply bg-red-600 text-white;
+    @apply bg-flag text-white;
   }
 
   .card {
-    @apply rounded-2xl bg-white border border-gray-200 shadow-sm;
+    @apply rounded-xl bg-white border border-ink/10 shadow-sm;
   }
 
   .label {
     @apply block text-sm font-semibold text-ink/70 mb-1.5;
+  }
+
+  /* The signature element: a rubber stamp. Double ring, canted, mono-spaced
+     caps — appears when a room (READY) or the inspection (COMPLETE) is done. */
+  .stamp {
+    @apply inline-block font-display uppercase select-none;
+    color: var(--color-brand);
+    border: 2px solid currentColor;
+    border-radius: 6px;
+    padding: 0.15em 0.5em;
+    box-shadow: inset 0 0 0 1.5px var(--color-card),
+      inset 0 0 0 3px currentColor;
+    transform: rotate(-6deg);
+    letter-spacing: 0.08em;
+    opacity: 0.92;
+  }
+
+  .stamp-tag {
+    color: #a97b12; /* stamped manila — darker than --color-tag for contrast */
+  }
+
+  /* Punched tag-hole on room cards (the laminated-tag cue) */
+  .tag-hole {
+    @apply block h-3.5 w-3.5 shrink-0 rounded-full bg-paper;
+    box-shadow: inset 0 1px 2px rgb(17 54 59 / 0.25),
+      0 0 0 2px rgb(17 54 59 / 0.15);
+  }
+
+  /* Timestamps are evidence — always mono */
+  .stamp-time {
+    @apply font-mono text-[0.8em] tracking-tight;
   }
 }

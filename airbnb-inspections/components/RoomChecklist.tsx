@@ -30,34 +30,34 @@ export default function RoomChecklist({ room }: { room: Room }) {
   return (
     <section className="card p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-lg font-bold">Checklist</h2>
+        <h2 className="display text-sm">Checklist</h2>
         <div className="flex items-center gap-3">
           <SaveIndicator status={status} tone="light" />
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-bold ${
-              checked === checklist.length && checklist.length > 0
-                ? "bg-emerald-100 text-emerald-700"
-                : "bg-gray-100 text-ink/60"
-            }`}
-          >
-            {checked}/{checklist.length}
-          </span>
+          {checked === checklist.length && checklist.length > 0 ? (
+            <span className="stamp text-[0.6rem]">
+              Ready · {checked}/{checklist.length}
+            </span>
+          ) : (
+            <span className="rounded-full bg-paper px-3 py-1 font-mono text-xs font-bold text-ink/60">
+              {checked}/{checklist.length}
+            </span>
+          )}
         </div>
       </div>
 
-      <ul className="divide-y divide-gray-100">
+      <ul className="divide-y divide-ink/5">
         {checklist.map((item) => (
           <li key={item.id}>
             <button
               onClick={() => toggle(item.id)}
-              className="flex w-full items-center gap-4 py-3.5 text-left active:bg-gray-50"
+              className="flex w-full items-center gap-4 py-3.5 text-left active:bg-paper"
             >
               <span
                 aria-hidden
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border-2 text-sm font-bold transition ${
                   item.checked
-                    ? "border-emerald-500 bg-emerald-500 text-white"
-                    : "border-gray-300 bg-white text-transparent"
+                    ? "border-brand bg-brand text-white"
+                    : "border-ink/25 bg-white text-transparent"
                 }`}
               >
                 ✓

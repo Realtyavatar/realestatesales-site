@@ -85,9 +85,9 @@ export default function StartInspectionPrompt() {
           <form
             onSubmit={begin}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+            className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl"
           >
-            <h2 className="text-xl font-bold">Begin a checkout inspection?</h2>
+            <h2 className="display text-lg">Begin a checkout inspection?</h2>
             <p className="mt-1 text-sm text-ink/60">
               A guest has checked out — walk through each room, tick off the
               checklist, take timestamped photos and flag any damage.

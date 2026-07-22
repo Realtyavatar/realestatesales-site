@@ -4,14 +4,16 @@ import {
   PDFImage,
   PDFPage,
   StandardFonts,
+  degrees,
   rgb,
   type RGB,
 } from "pdf-lib";
 import { formatDateTime, severityLabel, statusLabel } from "@/lib/format";
 import type { DamageFlag, DamageSeverity, Inspection, Room } from "@/lib/types";
 
-const INK = rgb(35 / 255, 35 / 255, 35 / 255);
-const ROSE = rgb(255 / 255, 56 / 255, 92 / 255);
+const INK = rgb(17 / 255, 54 / 255, 59 / 255); // deep petrol
+const TEAL = rgb(14 / 255, 125 / 255, 113 / 255); // eucalyptus stamp ink
+const MANILA = rgb(169 / 255, 123 / 255, 18 / 255); // in-progress tag
 const GRAY = rgb(0.45, 0.5, 0.56);
 const LIGHT = rgb(0.95, 0.96, 0.97);
 const RED = rgb(0.8, 0.15, 0.15);
@@ -138,7 +140,7 @@ class ReportBuilder {
     const h = 26;
     this.y -= h;
     this.page.drawRectangle({ x: MARGIN, y: this.y, width: CONTENT_W, height: h, color: INK });
-    this.page.drawRectangle({ x: MARGIN, y: this.y, width: 5, height: h, color: ROSE });
+    this.page.drawRectangle({ x: MARGIN, y: this.y, width: 5, height: h, color: TEAL });
     this.page.drawText(sanitize(title), {
       x: MARGIN + 14,
       y: this.y + 8,
@@ -223,6 +225,26 @@ class ReportBuilder {
     const h = dims.height * scale;
     this.page.drawImage(img, { x, y: yTop - h, width: w, height: h });
     return { w, h };
+  }
+
+  /** Rubber-stamp mark (the app's signature element): double ring, canted. */
+  drawStamp(label: string, x: number, y: number, color: RGB) {
+    const size = 14;
+    const padX = 12;
+    const w = this.bold.widthOfTextAtSize(label, size) + padX * 2;
+    const h = 30;
+    const rot = degrees(8);
+    this.page.drawRectangle({
+      x, y, width: w, height: h,
+      borderColor: color, borderWidth: 2, opacity: 0, rotate: rot,
+    });
+    this.page.drawRectangle({
+      x: x + 3.5, y: y + 3.5, width: w - 7, height: h - 7,
+      borderColor: color, borderWidth: 0.75, opacity: 0, rotate: rot,
+    });
+    this.page.drawText(label, {
+      x: x + padX, y: y + 10, size, font: this.bold, color, rotate: rot,
+    });
   }
 
   drawDamageFlag(flag: DamageFlag, roomLabel?: string) {
@@ -361,7 +383,7 @@ export async function buildReportPdf(data: ReportData): Promise<Uint8Array> {
   // ---------------------------------------------------------------- cover
   b.newPage();
   b.page.drawRectangle({ x: 0, y: PAGE_H - 190, width: PAGE_W, height: 190, color: INK });
-  b.page.drawRectangle({ x: 0, y: PAGE_H - 196, width: PAGE_W, height: 6, color: ROSE });
+  b.page.drawRectangle({ x: 0, y: PAGE_H - 196, width: PAGE_W, height: 6, color: TEAL });
 
   b.page.drawText("CHECKOUT INSPECTION REPORT", {
     x: MARGIN,
@@ -385,8 +407,16 @@ export async function buildReportPdf(data: ReportData): Promise<Uint8Array> {
     y: PAGE_H - 125,
     size: 11,
     font: b.bold,
-    color: ROSE,
+    // mint — readable against the petrol masthead
+    color: rgb(0.63, 0.86, 0.8),
   });
+
+  // Signature stamp: inspection status, stamped over the cover's top-right
+  if (inspection.status === "complete") {
+    b.drawStamp("COMPLETE", PAGE_W - 190, PAGE_H - 275, TEAL);
+  } else {
+    b.drawStamp("IN PROGRESS", PAGE_W - 210, PAGE_H - 275, MANILA);
+  }
 
   b.y = PAGE_H - 230;
   b.text("Inspection details", { size: 13, font: b.bold });

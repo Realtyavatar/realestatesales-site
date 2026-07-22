@@ -118,7 +118,7 @@ Vercel project (the app itself). ~20 minutes.
 ### 3. Put it on your home screen
 
 On your phone open the site in Safari/Chrome → Share → **Add to Home
-Screen**. It installs like an app (standalone, charcoal splash, house icon).
+Screen**. It installs like an app (standalone, deep-petrol splash, inspection-tag icon).
 
 ---
 

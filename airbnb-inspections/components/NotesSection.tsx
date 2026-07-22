@@ -20,7 +20,7 @@ export default function NotesSection({ inspection }: { inspection: Inspection })
   return (
     <section className="card p-4">
       <div className="mb-2 flex items-center justify-between">
-        <h2 className="text-lg font-bold">Overall notes</h2>
+        <h2 className="display text-sm">Overall notes</h2>
         <SaveIndicator status={status} tone="light" />
       </div>
       <textarea

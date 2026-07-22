@@ -88,8 +88,8 @@ export default function DamageFlags({
   return (
     <section className="card p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-lg font-bold">Damage flags</h2>
-        <span className="text-sm text-ink/50">{flags.length}</span>
+        <h2 className="display text-sm">Damage flags</h2>
+        <span className="font-mono text-sm text-ink/50">{flags.length}</span>
       </div>
 
       {flags.length === 0 && (
@@ -100,10 +100,10 @@ export default function DamageFlags({
 
       <ul className="space-y-4">
         {flags.map((flag) => (
-          <li key={flag.id} className="rounded-xl border border-gray-200 p-3">
+          <li key={flag.id} className="rounded-xl border border-ink/10 p-3">
             <div className="mb-2 flex items-center justify-between gap-2">
               {!fixedRoomId && (
-                <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-ink/70">
+                <span className="rounded-full bg-paper px-3 py-1 text-xs font-semibold text-ink/70">
                   {roomName(flag.room_id)}
                 </span>
               )}
@@ -115,7 +115,7 @@ export default function DamageFlags({
                     className={`rounded-full px-3 py-1.5 text-xs font-bold transition ${
                       flag.severity === s.value
                         ? SEVERITY_STYLES[s.value] + " ring-2 ring-current"
-                        : "bg-gray-100 text-ink/40"
+                        : "bg-paper text-ink/40"
                     }`}
                   >
                     {s.label}
@@ -137,7 +137,7 @@ export default function DamageFlags({
             />
             <button
               onClick={() => deleteFlag(flag.id)}
-              className="mt-2 text-sm font-semibold text-red-600"
+              className="mt-2 text-sm font-semibold text-flag"
             >
               Remove flag
             </button>
