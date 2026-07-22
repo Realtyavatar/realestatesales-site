@@ -16,9 +16,9 @@ import {
 } from "@/lib/types";
 
 const RESULTS: { value: ChecklistResult; label: string; activeCls: string }[] = [
-  { value: "pass", label: "Pass", activeCls: "bg-emerald-600 text-white" },
-  { value: "fail", label: "Fail", activeCls: "bg-red-600 text-white" },
-  { value: "na", label: "N/A", activeCls: "bg-gray-500 text-white" },
+  { value: "pass", label: "Pass", activeCls: "rocker-on-pass" },
+  { value: "fail", label: "Fail", activeCls: "rocker-on-fail" },
+  { value: "na", label: "N/A", activeCls: "rocker-on-na" },
 ];
 
 export default function BoardEditor({
@@ -102,7 +102,7 @@ export default function BoardEditor({
       <main className="mx-auto max-w-3xl space-y-6 px-3 py-4">
         {/* Details */}
         <section className="card space-y-4 p-4">
-          <h2 className="text-lg font-bold">Board details</h2>
+          <h2 className="section-tag">Board details</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="label" htmlFor="board_name">Board name / ID</label>
@@ -131,7 +131,7 @@ export default function BoardEditor({
               <input
                 id="rating_amps"
                 inputMode="numeric"
-                className="field"
+                className="field-mono"
                 placeholder="e.g. 250"
                 value={board.rating_amps}
                 onChange={(e) => set("rating_amps", e.target.value)}
@@ -141,7 +141,7 @@ export default function BoardEditor({
               <label className="label" htmlFor="fault_level">Fault level</label>
               <input
                 id="fault_level"
-                className="field"
+                className="field-mono"
                 placeholder="e.g. 10kA"
                 value={board.fault_level}
                 onChange={(e) => set("fault_level", e.target.value)}
@@ -152,7 +152,7 @@ export default function BoardEditor({
 
         {/* Checklist */}
         <section className="card p-4">
-          <h2 className="mb-3 text-lg font-bold">Checklist</h2>
+          <h2 className="section-tag mb-3">Checklist</h2>
           <ul className="space-y-3">
             {board.checklist.map((item) => (
               <li key={item.id} className="rounded-xl border border-gray-200 p-3">
@@ -173,10 +173,8 @@ export default function BoardEditor({
                     <button
                       key={r.value}
                       onClick={() => setResult(item.id, r.value)}
-                      className={`min-h-[48px] rounded-xl text-sm font-bold transition ${
-                        item.result === r.value
-                          ? r.activeCls
-                          : "bg-gray-100 text-navy/60 active:bg-gray-200"
+                      className={`rocker ${
+                        item.result === r.value ? r.activeCls : "rocker-off"
                       }`}
                     >
                       {r.label}
@@ -206,7 +204,7 @@ export default function BoardEditor({
         {/* Defects */}
         <section className="card space-y-4 p-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">Defects found?</h2>
+            <h2 className="section-tag">Defects found?</h2>
             <button
               role="switch"
               aria-checked={board.has_defects}
@@ -233,10 +231,10 @@ export default function BoardEditor({
                     <button
                       key={s.value}
                       onClick={() => set("defect_severity", s.value)}
-                      className={`min-h-[52px] rounded-xl px-1 text-xs font-bold leading-tight transition sm:text-sm ${
+                      className={`rocker px-1 text-[11px] leading-tight sm:text-sm ${
                         board.defect_severity === s.value
-                          ? "bg-red-600 text-white"
-                          : "bg-gray-100 text-navy/60 active:bg-gray-200"
+                          ? "rocker-on-fail"
+                          : "rocker-off"
                       }`}
                     >
                       {s.label}

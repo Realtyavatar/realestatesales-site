@@ -37,8 +37,13 @@ export default function LoginPage() {
               <path d="M36 6 16 36h12l-4 22 24-32H34l6-20z" fill="#E8720C" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-white">Impulse Reports</h1>
-          <p className="mt-2 text-white/60">
+          <h1
+            className="text-3xl font-bold uppercase tracking-[0.04em] text-white"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Impulse Reports
+          </h1>
+          <p className="mono mt-2 text-sm text-white/60">
             Impulse Electrical Contractors · REC 25266
           </p>
         </div>

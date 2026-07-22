@@ -17,11 +17,11 @@ const STATUS_FILTERS: { value: JobStatus | "all"; label: string }[] = [
 export function statusPillClasses(status: JobStatus): string {
   switch (status) {
     case "draft":
-      return "bg-gray-200 text-gray-700";
+      return "tag-pill bg-gray-200 text-gray-700";
     case "in_progress":
-      return "bg-brand/15 text-brand-dark";
+      return "tag-pill bg-brand/15 text-brand-dark";
     case "complete":
-      return "bg-emerald-100 text-emerald-800";
+      return "tag-pill bg-emerald-100 text-emerald-800";
   }
 }
 
@@ -74,10 +74,11 @@ export default function JobsList({ jobs }: { jobs: Job[] }) {
           <button
             key={f.value}
             onClick={() => setStatusFilter(f.value)}
-            className={`min-h-[44px] shrink-0 rounded-full px-4 text-sm font-semibold transition ${
+            style={{ fontFamily: "var(--font-display)" }}
+            className={`min-h-[44px] shrink-0 rounded-md px-4 text-sm font-bold uppercase tracking-[0.06em] transition ${
               statusFilter === f.value
                 ? "bg-navy text-white"
-                : "bg-white text-navy border border-gray-300"
+                : "border border-line bg-white text-navy/70"
             }`}
           >
             {f.label}
@@ -93,16 +94,14 @@ export default function JobsList({ jobs }: { jobs: Job[] }) {
                 <p className="min-w-0 flex-1 text-lg font-bold leading-snug">
                   {job.site_address || "No address yet"}
                 </p>
-                <span
-                  className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${statusPillClasses(job.status)}`}
-                >
+                <span className={`shrink-0 ${statusPillClasses(job.status)}`}>
                   {statusLabel(job.status)}
                 </span>
               </div>
               <p className="mt-1 text-navy/70">
                 {job.client_name || "No client yet"}
               </p>
-              <p className="mt-1 text-sm text-navy/50">
+              <p className="mono mt-1 text-[12.5px] text-navy/50">
                 {jobTypeLabel(job.job_type)} · {formatDate(job.job_date)}
               </p>
             </Link>
